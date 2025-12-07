@@ -4,6 +4,7 @@ import client
 
 response = None
 
+
 #Formatear mi encabezado para que los ojos no sufran
 def formatHeaders(headers):
     formattedText = ""
@@ -27,7 +28,10 @@ def printBodyTextInfo(body):
 #Funcion que se activa cuando se presiona el boton de enviar solicitud
 def pressSendRequestBtn():
     urlContent = sendUrlEntry.get()
-    response = client.sendRequestGetMethod(urlContent)
+    if (option.get() == "GET"):
+        response = client.sendRequestGetMethod(urlContent)
+    else:
+        response = ""
     headers = formatHeaders(response.getheaders())
     body = response.read()
     printHeaderTextInfo(headers)
@@ -51,6 +55,7 @@ sendUrlEntry.grid(row = 0, column = 1, padx = 5, pady = 5)
 sendUrlEntry.config(width = 50)
 
 #Se cambia el height por si se quiere agregar mas de dos metodos
+#option es una variable global que guardara la opcion seleccionada
 option = StringVar()
 methodComboBox = ttk.Combobox(formFrame, textvariable = option, values = ["GET", "HEAD"], state = "readonly")
 methodComboBox.current(0)
