@@ -1,12 +1,28 @@
 import http.client
+import urllib.parse
 
+conn = None
 
-def connectToHost(host):
+def connectToHostGetMethod(host):
+    global conn
     conn = http.client.HTTPSConnection(host)
     conn.request("GET", "/", headers = {"Host": host})
-    return conn.getresponse()
+    return conn
 
-def sendHttpRequest(host):
+def sendRequestGetMethod(host):
+    global conn
     print(f"HTTP request Sent to {host}")
-    response = connectToHost(host)
+    conn = connectToHostGetMethod(host)
+    response = conn.getresponse()
     print(response.status, response.reason)
+    print(f"Content-Type: {response.getheader("Content-Type")}")
+    print(f"Server: {response.getheader("Server")}")
+    print(f"Date: {response.getheader("Date")}")
+    print(f"Content-Length: {response.getheader("Content-Length")}") 
+    print(f"Cache-Control: {response.getheader("Cache-Control")}")
+    return response
+    
+
+def closeConnection():
+    conn.close()
+
