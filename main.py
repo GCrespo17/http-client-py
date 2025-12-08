@@ -6,8 +6,9 @@ response = None
 
 
 #Formatear mi encabezado para que los ojos no sufran
-def formatHeaders(headers):
-    formattedText = ""
+def formatHeaders(headers, status, reason, version):
+    httpVersion = f"HTTP/{version // 10}.{version % 10}"
+    formattedText = f"{httpVersion} {status} {reason}\n\n"
     for key, value in headers:
         formattedText += f"{key}: {value}\n\n"
     return formattedText
@@ -29,10 +30,10 @@ def printBodyTextInfo(body):
 def pressSendRequestBtn():
     urlContent = sendUrlEntry.get()
     if (option.get() == "GET"):
-        response = client.sendRequestGetMethod(urlContent)
-    else:
-        response = ""
-    headers = formatHeaders(response.getheaders())
+        response = client.sendRequest(urlContent, option.get())
+    elif (option.get() == "HEAD"):
+        response = client.sendRequest(urlContent, option.get())
+    headers = formatHeaders(response.getheaders(), response.status, response.reason, response.version)
     body = response.read()
     printHeaderTextInfo(headers)
     printBodyTextInfo(body)
