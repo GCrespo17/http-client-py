@@ -6,6 +6,7 @@ class HTTPClient:
         self.conn = None
 
     def connectToHost(self, url, method):
+        #Se utiliza la libreria para parsear el url
         parsed = urllib.parse.urlparse(url)
         
         if not parsed.scheme:
@@ -18,7 +19,7 @@ class HTTPClient:
         if parsed.query:
             path += "?" + parsed.query
         
-        if parsed.scheme == "https":
+        if (parsed.scheme == "https"):
             if port:
                 self.conn = http.client.HTTPSConnection(host, port)
             else:
@@ -40,16 +41,4 @@ class HTTPClient:
     def closeConnection(self):
         if self.conn:
             self.conn.close()
-
-
-
-
-
-
-
-        
-
-    
-
-
 
